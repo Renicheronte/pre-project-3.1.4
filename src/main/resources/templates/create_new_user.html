@@ -8,9 +8,8 @@
 
 <form th:method="POST" th:action="@{/admin/user}" th:object="${user}">
 
-  <label for="userName">Введите логин: </label>
-  <input type="text" th:field="*{userName}" id="userName"/>
-  <div th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
+  <label for="username">Введите логин: </label>
+  <input type="text" th:field="*{username}" id="username"/>
   <br>
 
   <br>
@@ -45,7 +44,7 @@
 
   <br><br>
 
-  <select id="role-select" required class="form-control" th:field="*{roles}" multiple="multiple" >
+  <label for="role-select"></label><select id="role-select" required class="form-control" th:field="*{roles}" multiple="multiple" >
     <option th:each="role : ${role}"
             th:field="*{roles}"
             th:value="${role.id}"

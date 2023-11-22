@@ -1,18 +1,21 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "username")
-    private String userName;
+    private String username;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -23,17 +26,17 @@ public class User {
     private String email;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String userName, String firstName, String lastName, int yearOfBirth, double balance, String email, String password, Set<Role> roles) {
-        this.userName = userName;
+    public User(String username, String firstName, String lastName, int yearOfBirth, double balance, String email, String password, Set<Role> roles) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.yearOfBirth = yearOfBirth;
@@ -43,9 +46,9 @@ public class User {
         this.roles = roles;
     }
 
-    public User(int id, String userName, String firstName, String lastName, int yearOfBirth, double balance, String email, String password, Set<Role> roles) {
+    public User(int id, String username, String firstName, String lastName, int yearOfBirth, double balance, String email, String password, Set<Role> roles) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.yearOfBirth = yearOfBirth;
@@ -63,12 +66,13 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String nickname) {
-        this.userName = nickname;
+    public void setUsername(String nickname) {
+        this.username = nickname;
     }
 
     public String getFirstName() {
@@ -111,6 +115,7 @@ public class User {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -128,6 +133,32 @@ public class User {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Role> roles = getRoles();
+        return new HashSet<GrantedAuthority>(roles);
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -137,7 +168,7 @@ public class User {
         if (id != user.id) return false;
         if (yearOfBirth != user.yearOfBirth) return false;
         if (Double.compare(user.balance, balance) != 0) return false;
-        if (!Objects.equals(userName, user.userName)) return false;
+        if (!Objects.equals(username, user.username)) return false;
         if (!Objects.equals(firstName, user.firstName)) return false;
         if (!Objects.equals(lastName, user.lastName)) return false;
         if (!Objects.equals(email, user.email)) return false;
@@ -150,7 +181,7 @@ public class User {
         int result;
         long temp;
         result = id;
-        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + yearOfBirth;
@@ -166,7 +197,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", nickname='" + userName + '\'' +
+                ", nickname='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", yearOfBirth=" + yearOfBirth +

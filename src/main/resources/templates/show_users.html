@@ -6,20 +6,21 @@
 </head>
 <body>
 
-<form th:each="u : ${user}">
-  <a th:href="@{/admin/{id}(id=${u.getId()})}" th:text="${u.getUserName()}"></a>
-</form>
-
-<form th:each="u : ${user}"
-      th:method="DELETE" th:action="@{/admin/{id}(id=${u.getId()})}">
-  <input type="submit" value="Delete"/>
-</form>
-
-<br/>
+<div>
+  <table th:border="1">
+    <tr th:each="u : ${user}">
+      <a th:href="@{/admin/{id}(id=${u.getId()})}" th:text="${u.getUsername()}"></a>
+      <form th:method="DELETE" th:action="@{/admin/{id}(id=${u.getId()})}">
+        <input type="submit" value="Delete"/>
+      </form>
+      <br>
+    </tr>
+  </table>
+</div>
+<a href="/admin/create-new-user">Создать нового пользователя</a>
 <form action="/logout">
   <input type="submit" value="logout">
 </form>
 
-<a href="/admin/create-new-user">Создать нового пользователя</a>
 </body>
 </html>

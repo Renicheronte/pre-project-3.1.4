@@ -9,7 +9,7 @@ public interface UserService {
 
     User findOne(int id);
 
-    User findOne();
+    User findOne(String userName);
 
     void save(User user);
 
