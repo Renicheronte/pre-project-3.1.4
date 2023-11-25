@@ -7,6 +7,8 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
 
+    User findOne();
+
     User findOne(int id);
 
     User findOne(String userName);

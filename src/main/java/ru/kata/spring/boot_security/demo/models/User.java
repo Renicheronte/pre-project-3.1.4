@@ -132,6 +132,14 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public String rolesToString() {
+        StringBuilder rolesToStr = new StringBuilder();
+        for (Role role : roles) {
+            rolesToStr.append(role.getName().substring(5));
+        }
+        return rolesToStr.toString();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = getRoles();
