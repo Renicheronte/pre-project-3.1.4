@@ -44,8 +44,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User findOne(String email) {
-        return userRepository.findByEmail(email);
+    public User findOne(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
@@ -69,11 +69,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("User '%s' not found", email));
+            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
         return user;
     }

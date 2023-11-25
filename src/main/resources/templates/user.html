@@ -11,7 +11,7 @@
 
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-        <h5 class="navbar-brand" th:text="${user.getUsername()} + ' with roles: ' + ${user.rolesToString()}">email and role</h5>
+        <h5 class="navbar-brand" th:text="${user.getEmail()} + ' with roles: ' + ${user.rolesToString()}">email and role</h5>
         <a href="/logout">
             <button type="button" class="btn btn-secondary">Logout</button>
         </a>
@@ -22,11 +22,11 @@
     <nav id="sidebarMenu" class="col-md-2 col-lg-2 d-md-block sidebar collapse">
         <div class="position-sticky pt-2">
             <ul class="nav nav-pills flex-column">
-                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
-                        <a class="nav-link" href="/admin">
-                            Admin
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">
+                        Admin
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="/user">
                         User
