@@ -22,7 +22,7 @@
     <nav id="sidebarMenu" class="col-md-2 col-lg-2 d-md-block sidebar collapse">
         <div class="position-sticky pt-2">
             <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
                     <a class="nav-link" href="/admin">
                         Admin
                     </a>
