@@ -28,11 +28,11 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //@LazyCollection(LazyCollectionOption.FALSE) оказывается просто замена для FetchTYPE.EAGER предоставляемая Hibernate
     private Set<Role> roles = new HashSet<>();
 
     public User() {
